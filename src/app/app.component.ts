@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +7,30 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  private user = JSON.parse(localStorage.getItem('user'));
+  private role = localStorage.getItem('role');
+
+  loggedIn() {
+    if (this.user) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  notLoggedIn() {
+    if (!this.user) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isAdmin() {
+    if (this.role === 'ADMIN') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
