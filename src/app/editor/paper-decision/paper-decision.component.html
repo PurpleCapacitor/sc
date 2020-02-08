@@ -1,0 +1,28 @@
+<div class="container">
+  <div *ngFor="let review of reviews">
+    <label>Reviewer:</label>
+    {{review.reviewer}}
+    <br>
+    <label>Comment:</label>
+    {{review.reviewerComment}}
+    <br>
+    <label>Suggestion:</label>
+    {{review.suggestion}}
+  </div>
+</div>
+
+<div class="container">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+    <div *ngFor="let field of formFields">
+      <label>{{field.label}}</label>
+      <select name="{{field.id}}" ngModel>
+        <option *ngFor="let val of enumValues" value={{val}}>
+          {{field.type.values[val]}}
+        </option>
+      </select>
+    </div>
+    <div>
+      <input type="submit">
+    </div>
+  </form>
+</div>

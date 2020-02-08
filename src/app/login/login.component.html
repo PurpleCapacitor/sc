@@ -1,0 +1,15 @@
+<div class="container">
+  <form [formGroup]="credentials" name="form" (ngSubmit)="credentials.valid && onSubmit()">
+    <div class="form-group">
+      <label>Korisnicko ime</label>
+      <input class="form-control" type="text" formControlName="username" placeholder="Unesite korisnicko ime" required><br/>
+      <label>Lozinka</label>
+      <input class="form-control" type="password" formControlName="password" placeholder="Unesite lozinku" required>
+    </div>
+    <div class="form-group">
+      <button type="submit">Login</button>
+      <a routerLink="/registrate" class="btn btn-link">Register</a>
+    </div>
+
+  </form>
+</div>

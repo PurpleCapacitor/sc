@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="container">
+    <div *ngFor="let review of reviews">
+      <label>Reviewer:</label>
+      {{review.reviewer}}
+      <br>
+      <label>Comment:</label>
+      {{review.reviewerAuthorComment}}
+      <br>
+    </div>
+  </div>
+  <div>
+    <label class="btn btn-default">
+      <input type="file" (change)="selectFile($event)">
+    </label>
+  </div>
+</div>

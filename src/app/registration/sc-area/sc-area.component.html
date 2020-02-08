@@ -1,0 +1,10 @@
+<div>
+  <form #scForm="ngForm" (ngSubmit)="onSubmit(scForm.value)">
+    <div *ngFor="let field of formFields">
+      <label>{{field.label}}</label>
+      <input type="checkbox" ngModel name="{{field.id}}">
+    </div>
+
+    <input type="submit">
+  </form>
+</div>

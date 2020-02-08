@@ -1,0 +1,23 @@
+<div>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+
+    <div *ngFor="let field of formFields">
+      <label>{{field.label}}</label>
+      <input type="text" name={{field.id}} ngModel *ngIf="field.type.name=='string'">
+      <input type="number" name={{field.id}} ngModel *ngIf="field.type.name=='long'">
+      <select name="scArea" ngModel *ngIf="field.type.name=='enum' && (field.type.values['math'] || field.type.values['biology']
+      && field.type.values['biology'])">
+        <option *ngFor="let val of enumValues" value={{val}}>
+          {{field.type.values[val]}}
+        </option>
+      </select>
+      <select name="type" ngModel *ngIf="field.type.name=='enum' && (field.type.values['openAccess'] || field.type.values['paidAccess'])">
+        <option *ngFor="let val of enumValues2" value={{val}}>
+          {{field.type.values[val]}}
+        </option>
+      </select>
+    </div>
+
+    <input type="submit">
+  </form>
+</div>

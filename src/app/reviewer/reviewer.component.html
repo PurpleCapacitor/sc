@@ -1,0 +1,4 @@
+<table>
+  <tr *ngFor="let task of tasks" > <td>{{task.name}}</td><td><button (click)="proceed(task.taskId, task.name)">Proceed</button></td></tr>
+
+</table>

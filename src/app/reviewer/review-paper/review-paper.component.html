@@ -1,0 +1,19 @@
+<div class="container">
+  <a href="http://localhost:8080/download/{{fileName}}">Download paper</a>
+</div>
+<div class="container">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+    <div *ngFor="let field of formFields">
+      <label>{{field.label}}</label>
+      <input type="text" name={{field.id}} ngModel *ngIf="field.type.name=='string'">
+      <select name="{{field.id}}" ngModel *ngIf="field.type.name=='enum'">
+        <option *ngFor="let val of enumValues" value={{val}}>
+          {{field.type.values[val]}}
+        </option>
+      </select>
+    </div>
+    <div>
+      <input type="submit">
+    </div>
+  </form>
+</div>

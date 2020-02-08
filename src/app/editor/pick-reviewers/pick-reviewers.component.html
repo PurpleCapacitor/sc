@@ -1,0 +1,11 @@
+<div class="container">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+    <div *ngFor="let reviewer of reviewers">
+      <label>{{reviewer.username}}</label>
+      <input type="checkbox" name={{reviewer.username}} ngModel>
+    </div>
+    <div>
+      <input type="submit">
+    </div>
+  </form>
+</div>

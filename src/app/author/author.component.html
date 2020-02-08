@@ -1,0 +1,8 @@
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" [routerLink]="['/review']" *ngIf="IsAuthor()">New paper</a>
+</nav>
+
+<table>
+  <tr *ngFor="let task of tasks" > <td>{{task.name}}</td><td><button (click)="proceed(task.taskId, task.name)">Proceed</button></td></tr>
+
+</table>

@@ -1,0 +1,22 @@
+<div class="container">
+  <table class="table">
+    <thead>Paper details</thead>
+    <tbody *ngFor="let info of paperInfo">
+    <tr>
+      <td *ngIf="info.value">{{info.type}}</td><td *ngIf="info.value">{{info.value}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+    <div *ngFor="let field of formFields">
+      <label>{{field.label}}</label>
+      <input type="checkbox" name={{field.id}} ngModel *ngIf="field.type.name=='boolean'">
+    </div>
+    <div>
+      <input type="submit">
+    </div>
+  </form>
+</div>

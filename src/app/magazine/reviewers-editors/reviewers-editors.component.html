@@ -1,0 +1,11 @@
+<div>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+
+    <div *ngFor="let field of formFields">
+      <label>{{field.value}}</label>
+      <input type="checkbox" name={{field.value}} ngModel *ngIf="field.type =='checkBox'">
+    </div>
+
+    <input type="submit">
+  </form>
+</div>

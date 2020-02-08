@@ -1,4 +1,7 @@
 import {Component} from '@angular/core';
+import {User} from './user';
+import {UserService} from './services/users/user.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +10,13 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
-  private user = JSON.parse(localStorage.getItem('user'));
-  private role = localStorage.getItem('role');
+  private user = JSON.parse(localStorage.getItem("currentUser"));
+  private role = JSON.parse(localStorage.getItem("currentRole"));
+
+  constructor(private router: Router) {
+
+  }
+
 
   loggedIn() {
     if (this.user) {
@@ -26,8 +34,15 @@ export class AppComponent {
     }
   }
 
+  logout() {
+    localStorage.removeItem("currentUser");
+    this.router.navigate(['/']).then( () => {
+      window.location.reload();
+    });
+  }
+
   isAdmin() {
-    if (this.role === 'ADMIN') {
+    if (this.role === 'admin') {
       return true;
     } else {
       return false;

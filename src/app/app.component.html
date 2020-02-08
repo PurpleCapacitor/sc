@@ -1,7 +1,5 @@
 <nav class="navbar navbar-light bg-light">
-
-  <a class="navbar-brand" [routerLink]="['/registrate']">Registrate</a>
-  <a class="navbar-brand" [routerLink]="['/login']">Login</a>
-  <a class="navbar-brand" [routerLink]="['/magazine']">Magazines</a>
+  <a class="navbar-brand" [routerLink]="['/login']" *ngIf="notLoggedIn()">Login</a>
+  <a class="navbar-brand" [routerLink]="['/login']" *ngIf="loggedIn()" (click)="logout()">Log out</a>
 </nav>
 <router-outlet></router-outlet>

@@ -1,0 +1,15 @@
+<div class="container">
+  <div>
+    <a href="http://localhost:8080/download/{{fileName}}">Download paper</a>
+  </div>
+  <br>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+    <div *ngFor="let field of formFields">
+      <label>{{field.label}}</label>
+      <input type="checkbox" name={{field.id}} ngModel *ngIf="field.type.name=='boolean'">
+    </div>
+    <div>
+      <input type="submit">
+    </div>
+  </form>
+</div>

@@ -1,0 +1,18 @@
+<div class="container">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+    <div *ngFor="let field of formFields">
+      <label>{{field.label}}</label>
+    </div>
+    <div>
+      <label>Select magazine:</label>
+      <select name="magazineName" ngModel>
+        <option *ngFor="let m of this.magazines" value={{m.name}}>
+          {{m.name}}
+        </option>
+      </select>
+    </div>
+
+
+    <input type="submit">
+  </form>
+</div>
