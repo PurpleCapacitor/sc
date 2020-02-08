@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_16ii8ze" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.4.1">
+  <bpmn:process id="magazine" name="Magazine" isExecutable="true">
+    <bpmn:extensionElements>
+      <camunda:executionListener class="root.demo.handlers.TestProcessHandler" event="start" />
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent_1" name="Initialize">
+      <bpmn:outgoing>SequenceFlow_1temg0k</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_01cjrxq" name="New Magazine Init" camunda:assignee="${mainEditor}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="name" label="Name" type="string" />
+          <camunda:formField id="issn" label="ISSN" type="long" />
+          <camunda:formField id="scientificArea" label="Scientific Area" type="enum">
+            <camunda:value id="math" name="Math" />
+            <camunda:value id="biology" name="Biology" />
+            <camunda:value id="engineering" name="Engineering" />
+          </camunda:formField>
+          <camunda:formField id="paymentMethod" label="Payment Method" type="enum">
+            <camunda:value id="openAccess" name="Open access" />
+            <camunda:value id="paidAccess" name="Paid access" />
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0aqt0vx</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_109d3ij</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1msbb43</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1msbb43" sourceRef="Task_01cjrxq" targetRef="Task_1l6g5ja" />
+    <bpmn:userTask id="Task_1iul21v" name="Add Editors and Reviewers" camunda:assignee="${mainEditor}">
+      <bpmn:incoming>SequenceFlow_1xzcxp1</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_164ii82</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_164ii82" sourceRef="Task_1iul21v" targetRef="Task_1ftm22x" />
+    <bpmn:userTask id="Task_1l3k9a4" name="Admin Check">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="accept" label="Accept" type="boolean" />
+          <camunda:formField id="deny" label="Deny" type="boolean" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_00utqug</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0an5ner</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_1m1lcam">
+      <bpmn:incoming>SequenceFlow_0an5ner</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0aqt0vx</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1d6hu32</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_0an5ner" sourceRef="Task_1l3k9a4" targetRef="ExclusiveGateway_1m1lcam" />
+    <bpmn:sequenceFlow id="SequenceFlow_0aqt0vx" name="Revise Magazine " sourceRef="ExclusiveGateway_1m1lcam" targetRef="Task_01cjrxq">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${deny}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_1d6hu32" name="Publish" sourceRef="ExclusiveGateway_1m1lcam" targetRef="Task_0yfxxhc">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${accept}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Task_0yfxxhc" name="Publish Magazine" camunda:class="root.demo.services.camunda.ApproveMagazineService">
+      <bpmn:incoming>SequenceFlow_1d6hu32</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0xp75ig</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0xp75ig" sourceRef="Task_0yfxxhc" targetRef="EndEvent_11q7aba" />
+    <bpmn:endEvent id="EndEvent_11q7aba" name="Magazine published">
+      <bpmn:incoming>SequenceFlow_0xp75ig</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1xzcxp1" sourceRef="Task_1l6g5ja" targetRef="Task_1iul21v" />
+    <bpmn:serviceTask id="Task_1l6g5ja" name="Magazine added" camunda:class="root.demo.services.camunda.AddMagazineService">
+      <bpmn:incoming>SequenceFlow_1msbb43</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1xzcxp1</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_1ftm22x" name="Adding Magazine Editors &#38; Reviewers" camunda:class="root.demo.services.camunda.AddMagazinePersonnel">
+      <bpmn:incoming>SequenceFlow_164ii82</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_00utqug</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_00utqug" sourceRef="Task_1ftm22x" targetRef="Task_1l3k9a4" />
+    <bpmn:sequenceFlow id="SequenceFlow_1temg0k" sourceRef="StartEvent_1" targetRef="Task_0xa2dlx" />
+    <bpmn:sequenceFlow id="SequenceFlow_0qkk5kx" sourceRef="Task_0xa2dlx" targetRef="Task_0d68dz9" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_0fgs9kf">
+      <bpmn:incoming>SequenceFlow_0d2ky20</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_109d3ij</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0sqt4zx</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_0d2ky20" sourceRef="Task_0d68dz9" targetRef="ExclusiveGateway_0fgs9kf" />
+    <bpmn:sequenceFlow id="SequenceFlow_109d3ij" name="Logged In" sourceRef="ExclusiveGateway_0fgs9kf" targetRef="Task_01cjrxq">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${loggedIn}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_0sqt4zx" name="invalid login info" sourceRef="ExclusiveGateway_0fgs9kf" targetRef="Task_0xa2dlx">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!loggedIn}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Task_0xa2dlx" name="Login">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="username" label="Username" type="string" />
+          <camunda:formField id="password" label="Password" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1temg0k</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0sqt4zx</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0qkk5kx</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_0d68dz9" name="Check login" camunda:class="root.demo.services.camunda.UserService">
+      <bpmn:incoming>SequenceFlow_0qkk5kx</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0d2ky20</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="magazine">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="162" y="309" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="160" y="352" width="41" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_1y07r1j_di" bpmnElement="Task_01cjrxq">
+        <dc:Bounds x="380" y="287" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1msbb43_di" bpmnElement="SequenceFlow_1msbb43">
+        <di:waypoint x="480" y="327" />
+        <di:waypoint x="520" y="327" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_00s7bvs_di" bpmnElement="Task_1iul21v">
+        <dc:Bounds x="650" y="287" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_164ii82_di" bpmnElement="SequenceFlow_164ii82">
+        <di:waypoint x="750" y="327" />
+        <di:waypoint x="790" y="327" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0zjj8uv_di" bpmnElement="Task_1l3k9a4">
+        <dc:Bounds x="920" y="287" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1m1lcam_di" bpmnElement="ExclusiveGateway_1m1lcam" isMarkerVisible="true">
+        <dc:Bounds x="1085" y="302" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0an5ner_di" bpmnElement="SequenceFlow_0an5ner">
+        <di:waypoint x="1020" y="327" />
+        <di:waypoint x="1085" y="327" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0aqt0vx_di" bpmnElement="SequenceFlow_0aqt0vx">
+        <di:waypoint x="1110" y="352" />
+        <di:waypoint x="1110" y="550" />
+        <di:waypoint x="430" y="550" />
+        <di:waypoint x="430" y="367" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="728" y="532" width="85" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1d6hu32_di" bpmnElement="SequenceFlow_1d6hu32">
+        <di:waypoint x="1135" y="327" />
+        <di:waypoint x="1200" y="327" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1150" y="309" width="36" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1pnkqp4_di" bpmnElement="Task_0yfxxhc">
+        <dc:Bounds x="1200" y="287" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0xp75ig_di" bpmnElement="SequenceFlow_0xp75ig">
+        <di:waypoint x="1300" y="327" />
+        <di:waypoint x="1392" y="327" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_11q7aba_di" bpmnElement="EndEvent_11q7aba">
+        <dc:Bounds x="1392" y="309" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1386" y="352" width="48" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1xzcxp1_di" bpmnElement="SequenceFlow_1xzcxp1">
+        <di:waypoint x="620" y="327" />
+        <di:waypoint x="650" y="327" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0hqqf30_di" bpmnElement="Task_1l6g5ja">
+        <dc:Bounds x="520" y="287" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1w4m02u_di" bpmnElement="Task_1ftm22x">
+        <dc:Bounds x="790" y="287" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_00utqug_di" bpmnElement="SequenceFlow_00utqug">
+        <di:waypoint x="890" y="327" />
+        <di:waypoint x="920" y="327" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1temg0k_di" bpmnElement="SequenceFlow_1temg0k">
+        <di:waypoint x="198" y="327" />
+        <di:waypoint x="250" y="327" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0qkk5kx_di" bpmnElement="SequenceFlow_0qkk5kx">
+        <di:waypoint x="300" y="287" />
+        <di:waypoint x="300" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0fgs9kf_di" bpmnElement="ExclusiveGateway_0fgs9kf" isMarkerVisible="true">
+        <dc:Bounds x="405" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0d2ky20_di" bpmnElement="SequenceFlow_0d2ky20">
+        <di:waypoint x="350" y="200" />
+        <di:waypoint x="405" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_109d3ij_di" bpmnElement="SequenceFlow_109d3ij">
+        <di:waypoint x="430" y="225" />
+        <di:waypoint x="430" y="287" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="401" y="238" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0sqt4zx_di" bpmnElement="SequenceFlow_0sqt4zx">
+        <di:waypoint x="430" y="175" />
+        <di:waypoint x="430" y="100" />
+        <di:waypoint x="190" y="100" />
+        <di:waypoint x="190" y="300" />
+        <di:waypoint x="250" y="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="272" y="82" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1y0wxxn_di" bpmnElement="Task_0xa2dlx">
+        <dc:Bounds x="250" y="287" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0lvk4b1_di" bpmnElement="Task_0d68dz9">
+        <dc:Bounds x="250" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
