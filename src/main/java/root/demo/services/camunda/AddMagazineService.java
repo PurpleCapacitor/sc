@@ -62,7 +62,7 @@ public class AddMagazineService implements JavaDelegate {
 		List<String> compatibleReviewers = new ArrayList<>();
 		for (User u : compatibleUsers) {
 			if(u.getUserType().equals(UserType.editor)){
-				execution.setVariable("editorValue", u.getUsername()); //TODO fakticki dva su kompatibilna, maineditor i ovaj sto je samo editor, tu bi trebala lista al jbg da znas
+				execution.setVariable("editorValue", u.getUsername());
 			} else if (u.getUserType().equals(UserType.reviewer)) {
 				compatibleReviewers.add(u.getUsername());				
 			}

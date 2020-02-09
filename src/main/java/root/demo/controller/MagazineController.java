@@ -92,9 +92,8 @@ public class MagazineController {
 
 	@GetMapping(value = "/fields/personnel/{ProcessInstanceId}", produces = "application/json")
 	public @ResponseBody CustomFormFieldDTO addEditorsReviewers(@PathVariable String ProcessInstanceId) {
+		//TODO puca
 		Task task = taskService.createTaskQuery().processInstanceId(ProcessInstanceId).list().get(0);
-		//TODO verovatno nista od ovoga ne radi, menjao sam model usera, tako da ceo proces magazine je pod pitanjem, ako stignes
-		// proveri da li radi, ako ne, jbg
 		List<CustomFormField> properties = new ArrayList<CustomFormField>();
 		String editorUsername = (String) runtimeService.getVariable(task.getProcessInstanceId(), "editorValue");
 		@SuppressWarnings("unchecked")
