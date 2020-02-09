@@ -48,7 +48,7 @@ export class BasicReviewComponent implements OnInit {
     let submit = this.reviewService.basicReview(decision, this.taskId);
     submit.subscribe(res => {
       console.log("Basic review done.");
-      this.router.navigate(['/formatReview']);
+      this.router.navigate(['/editor']);
     });
 
 

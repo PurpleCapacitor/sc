@@ -17,7 +17,10 @@ export class FormatReviewComponent implements OnInit {
   private taskId = '';
   private fileName = '';
 
-  constructor(private router: Router, private reviewService: ReviewService) {
+  constructor(private router: Router,  private passParam: PassParamService, private reviewService: ReviewService) {
+
+    this.passParam.currentTaskId.subscribe(current => this.taskId = current);
+
     let filePath = this.reviewService.getPaperFile(this.processInstance);
     filePath.subscribe(res => {
       this.fileName = res["file"];
@@ -40,7 +43,7 @@ export class FormatReviewComponent implements OnInit {
       decision.push({fieldId: value, fieldValue: values[value]});
     }
 
-    let submit = this.reviewService.formatReview(decision, this.formFieldsDto.taskId);
+    let submit = this.reviewService.formatReview(decision, this.taskId);
     submit.subscribe(res => {
       console.log("Format review done.");
       this.router.navigate(['/editor']);

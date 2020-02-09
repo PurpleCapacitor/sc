@@ -31,6 +31,9 @@ export class EditorComponent implements OnInit {
       if(taskName === "Basic review by main editor") {
         this.router.navigate(['/basicReview']);
       }
+      if(taskName === "Reviewing paper formatting") {
+        this.router.navigate(['/formatReview']);
+      }
       if(taskName === "Add comment") {
         this.router.navigate(['/comment']);
       }
