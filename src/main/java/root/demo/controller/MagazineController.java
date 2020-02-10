@@ -92,7 +92,6 @@ public class MagazineController {
 
 	@GetMapping(value = "/fields/personnel/{ProcessInstanceId}", produces = "application/json")
 	public @ResponseBody CustomFormFieldDTO addEditorsReviewers(@PathVariable String ProcessInstanceId) {
-		//TODO puca
 		Task task = taskService.createTaskQuery().processInstanceId(ProcessInstanceId).list().get(0);
 		List<CustomFormField> properties = new ArrayList<CustomFormField>();
 		String editorUsername = (String) runtimeService.getVariable(task.getProcessInstanceId(), "editorValue");

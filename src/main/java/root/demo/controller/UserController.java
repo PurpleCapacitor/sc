@@ -87,13 +87,13 @@ public class UserController {
 	public ResponseEntity<UserDTO> login(@RequestBody UserDTO userDTO) {
 
 		User user = userRepository.findByUsername(userDTO.getUsername());
-		if (identityService.checkPassword(userDTO.getUsername(), userDTO.getPassword())) { // ako je user pravljen i ima camundin pass
+		if (identityService.checkPassword(userDTO.getUsername(), userDTO.getPassword())) { 
 				userDTO.setRole(user.getUserType().toString());
 				System.out.println("Credentials valid, logging in");
 				return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 			
 		}
-		if (user.getPassword().equals(userDTO.getPassword())) { // rucno punjeni useri
+		if (user.getPassword().equals(userDTO.getPassword())) {
 			userDTO.setRole(user.getUserType().toString());
 			System.out.println("Credentials valid, logging in");
 			return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
@@ -176,6 +176,28 @@ public class UserController {
 		List<FormField> properties = tfd.getFormFields();		
 		return new FormFieldsDto(task.getId(), properties);		
 	}
+	
+	@GetMapping(value = "/admins/{pid}/{username}")
+	public ResponseEntity<List<TaskDto>> getAdminTasks(@PathVariable String pid, @PathVariable String username) {
+		List<Task> taskList = taskService.createTaskQuery().processInstanceId(pid).taskAssignee(username).list();
+		List<TaskDto> dtoList = new ArrayList<TaskDto>();
+		for (Task task : taskList) {
+			TaskDto dto = new TaskDto(task.getId(), task.getName(), task.getAssignee());
+			dtoList.add(dto);
+		}
+
+		return new ResponseEntity<List<TaskDto>>(dtoList, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/admins/tasks/{taskId}", produces = "application/json")
+	public @ResponseBody FormFieldsDto getAdminTaskFields(@PathVariable String taskId) {		
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		TaskFormData tfd = formService.getTaskFormData(task.getId());
+		List<FormField> properties = tfd.getFormFields();		
+		return new FormFieldsDto(task.getId(), properties);		
+	}
+	
+	
 	
 	
 

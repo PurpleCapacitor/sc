@@ -26,7 +26,6 @@ public class PromoteReviewer implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		@SuppressWarnings("unchecked")
 		List<FormSubmissionDto> dto = (List<FormSubmissionDto>) execution.getVariable("formSubmission");
-		
 		User user = userRepository.findByUsername((String) execution.getVariable("username"));
 		for (FormSubmissionDto dtoLoop : dto) {
 			if (dtoLoop.getFieldId().equals("approve")) {

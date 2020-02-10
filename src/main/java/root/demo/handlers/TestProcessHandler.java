@@ -264,7 +264,7 @@ public class TestProcessHandler implements ExecutionListener {
 
 		List<User> users = identityService.createUserQuery()
 				.userIdIn("editor1", "editor2", "editor3", "reviewer1", "reviewer2", "reviewer3", "author", "reviewer5",
-						"reviewer6", "reviewer7")
+						"reviewer6", "reviewer7", "test")
 				.list();
 
 		if (users.isEmpty()) {
@@ -342,6 +342,15 @@ public class TestProcessHandler implements ExecutionListener {
 			user6.setLastName("Mikic");
 			user6.setPassword("pass");
 			identityService.saveUser(user6);
+			
+			// admin
+			
+			User user11 = identityService.newUser("test");
+			user11.setEmail("jhgfg@mailf.com");
+			user11.setFirstName("Srfffffra");
+			user11.setLastName("Perixc");
+			user11.setPassword("pass");
+			identityService.saveUser(user11);
 
 			// Grupe
 

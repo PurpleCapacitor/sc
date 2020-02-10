@@ -57,7 +57,6 @@ public class DummyController {
 			System.out.println(fp.getId() + fp.getType());
 		}
 
-		runtimeService.setVariable(PI.getId(), "adminUsername", "test");
 		return new FormFieldsDto(task.getId(), PI.getId(), properties);
 	}
 

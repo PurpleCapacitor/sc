@@ -28,6 +28,7 @@ public class ActivateUserService implements JavaDelegate {
 		User user = userRepository.findByUsername((String) execution.getVariable("username"));
 		String processInstance = execution.getProcessInstanceId();
 		execution.setVariable("processInstancee", processInstance);
+		execution.setVariable("adminUsername", "test");
 		System.out.println(user.getUsername() + "'s email confirmed.");
 
 	}
