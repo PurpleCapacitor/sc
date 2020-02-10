@@ -54,4 +54,11 @@ export class UserService {
     return this.httpClient.get('http://localhost:8080/users/reviewers/tasks/'.concat(tid)) as Observable<any>;
   }
 
+  getAdminTasks(pid: string, username: string) {
+    return this.httpClient.get('http://localhost:8080/users/admins/' + pid + '/'.concat(username)) as Observable<any>;
+  }
+
+  getAdminTaskFields(tid) {
+    return this.httpClient.get('http://localhost:8080/users/admins/tasks/'.concat(tid)) as Observable<any>;
+  }
 }

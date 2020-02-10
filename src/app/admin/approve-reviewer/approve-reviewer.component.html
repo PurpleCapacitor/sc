@@ -1,5 +1,5 @@
 <div>
-  <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
 
     <div *ngFor="let field of formFields">
       <label>{{field.label}}</label> <br/>
