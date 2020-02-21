@@ -192,12 +192,16 @@ public class ResultRetriever {
 		LocationIndex coauthor2 = new LocationIndex("coauthor2", new GeoPoint(43.8556, 19.8425)); // uzice
 		LocationIndex reviewer1 = new LocationIndex("reviewer1", new GeoPoint(44.7489, 19.6908)); // sabac
 		LocationIndex reviewer2 = new LocationIndex("reviewer2", new GeoPoint(42.6977, 23.3219)); // sofia
+		LocationIndex reviewer3 = new LocationIndex("reviewer3", new GeoPoint(44.8740, 20.6476)); // pancevo
+		LocationIndex reviewer4 = new LocationIndex("reviewer4", new GeoPoint(47.4979, 19.0402)); // budimpesta
 
 		locationESRepository.index(author);
 		locationESRepository.index(coauthor1);
 		locationESRepository.index(coauthor2);
 		locationESRepository.index(reviewer1);
 		locationESRepository.index(reviewer2);
+		locationESRepository.index(reviewer3);
+		locationESRepository.index(reviewer4);
 
 		JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
 		ObjectNode pushContent = nodeFactory.objectNode();
