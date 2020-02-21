@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,13 +18,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -53,6 +46,8 @@ import root.demo.model.users.UserDetails;
 import root.demo.repositories.ESRepository;
 import root.demo.repositories.LocationESRepository;
 import root.demo.repositories.PaperRepository;
+import root.demo.services.json.Conversion;
+import root.demo.services.json.Hit;
 
 @Service
 public class ResultRetriever {
@@ -68,8 +63,6 @@ public class ResultRetriever {
 
 	@Autowired
 	LocationESRepository locationESRepository;
-
-	private RestTemplate template = new RestTemplate();
 
 	public ResultRetriever() {
 	}
@@ -217,7 +210,6 @@ public class ResultRetriever {
 		list.add(author);
 		list.add(coauthor1);
 		list.add(coauthor2);
-		List<ObjectNode> listt = new ArrayList<>();
 		for (LocationIndex index : list) {
 			ObjectNode mustNotObj = nodeFactory.objectNode();
 			ObjectNode geo_distance = nodeFactory.objectNode();
@@ -260,16 +252,31 @@ public class ResultRetriever {
 			os.write(input, 0, input.length);
 		}
 
+		ObjectMapper mapper = new ObjectMapper();
+		String responseFromES = "";
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
 			StringBuilder response = new StringBuilder();
 			String responseLine = null;
 			while ((responseLine = br.readLine()) != null) {
 				response.append(responseLine.trim());
+
 			}
 			System.out.println(response.toString());
+			responseFromES = response.toString();
+
 		}
-		
-		
+
+		Conversion conversion = mapper.readValue(responseFromES, Conversion.class);
+
+		List<Hit> hits = conversion.getHits().getHits();
+		List<String> reviewerName = new ArrayList<>();
+		for (Hit hit : hits) {
+			reviewerName.add(hit.getId());
+		}
+
+		for (String name : reviewerName) {
+			System.out.println(name);
+		}
 
 	}
 
