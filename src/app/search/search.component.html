@@ -1,0 +1,90 @@
+<div class="container">
+  <br />
+  <div>
+    <div>
+      <div class="row" >
+        <div class="col d-flex justify-content-between">
+          <h2>Parameters</h2>
+          <button class="btn btn-lg btn-primary" (click)="addFilter()" >Add filter</button><!--[disabled]="advancedQuery.queries.length === fields.length || advancedQuery.queries[advancedQuery.queries.length-1].field===''">Add filter</button>-->
+        </div>
+      </div>
+      <div class="row" *ngFor="let filter of advancedQuery.queries">
+        <div class="col">
+          <div class="form-group ustify-content-between text-center mt-2">
+            <label  for="{{filter.field}}">Search</label>
+            <input class="form-control text-center w-25 mx-auto" type="text" id="{{filter.field}}" name="{{filter.field}}" [(ngModel)]="filter.value"/>
+            <br/>
+            <label  for="{{filter.field}}-select">by:</label>
+            <select class="form-control text-center w-25 mx-auto" id="{{filter.field}}-select" name="{{filter.field}}-select" [(ngModel)]="filter.field">
+              <option *ngFor="let option of fields" [hidden]="checkIfFieldAlreadyTaken(option.value)" value="{{option.value}}">{{option.name}}</option>
+            </select>
+            <br/>
+            <button class="btn btn-danger" (click)="removeFilter(filter)">Delete filter</button>
+          </div>
+        </div>
+      </div>
+      <hr />
+    </div>
+    <br />
+    <div class="row">
+      <div class="col text-center">
+        <div *ngIf="advancedQuery.queries.length > 1">
+          <label for="operation">Operator</label>
+          <select class="form-control text-center w-25 mx-auto" id ="operation" [(ngModel)]="advancedQuery.operation">
+            <option value="AND">and</option>
+            <option value="OR">or</option>
+          </select>
+        </div>
+        <br/>
+        <button class=" btn btn-lg btn-success" (click)="go()">Go</button>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div *ngIf="results.length>0" class="col-9">
+    <div class="row">
+      <h3 class="col">Results</h3>
+    </div>
+    <div class="row">
+      <div class="col">
+        <ul class="list-group">
+          <li class="list-group-item container text-center" *ngFor="let item of results">
+            <div class="row">
+              <div class="col">
+                <h4>{{item.title}}</h4>
+              <!--  <h6>DOI: {{item.doi}}</h6>-->
+              </div>
+            </div>
+            <div class="col">
+              <h4>Author: {{item.authorName}}</h4>
+            </div>
+            <div class="row">
+              <!--<div class="col">
+                <p>{{item.highlight}}</p>
+              </div> -->
+              <div *ngIf="item.free; then canDownload else mustBuy">
+              </div>
+              <ng-template #canDownload>
+                <div>
+                  <a class="btn btn-danger" href="http://localhost:8080/download/{{item.filename}}" target="_blank" >Download paper</a>
+                </div>
+              </ng-template>
+              <ng-template #mustBuy>
+                <div class="text-center">
+                  <button class="btn btn-danger" (click)="buyPaper()">Buy paper</button>
+                </div>
+              </ng-template>
+            </div>
+            <div class="row">
+              <div class="col">
+                <h5>Published in magazine: {{item.magazineName}}</h5>
+              </div>
+            </div>
+          </li>
+          <br/>
+          <br/>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

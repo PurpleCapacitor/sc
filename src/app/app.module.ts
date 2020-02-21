@@ -42,6 +42,7 @@ import { ReviewPaperComponent } from './reviewer/review-paper/review-paper.compo
 import { PaperDecisionComponent } from './editor/paper-decision/paper-decision.component';
 import { ReworkEndComponent } from './author/rework-end/rework-end.component';
 import { PickAdditionalReviewersComponent } from './editor/pick-additional-reviewers/pick-additional-reviewers.component';
+import { SearchComponent } from './search/search.component';
 
 const ChildRoutes =
   [
@@ -77,7 +78,8 @@ const Routes = [
   { path: 'reviewPaper', component: ReviewPaperComponent },
   { path: 'paperDecision', component: PaperDecisionComponent },
   { path: 'reworkPaperAgain', component: ReworkEndComponent },
-  { path: 'pickAdditionalReviewers', component: PickAdditionalReviewersComponent }
+  { path: 'pickAdditionalReviewers', component: PickAdditionalReviewersComponent },
+  { path: 'search', component: SearchComponent }
 ];
 
 @NgModule({
@@ -110,6 +112,7 @@ const Routes = [
     PaperDecisionComponent,
     ReworkEndComponent,
     PickAdditionalReviewersComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
