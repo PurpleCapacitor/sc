@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import root.demo.dto.FormSubmissionDto;
+import root.demo.model.Location;
 import root.demo.model.users.UserDetails;
 import root.demo.repositories.MagazineRepository;
 import root.demo.repositories.ScientificAreaRepository;
 import root.demo.repositories.UserDetailsRepository;
 import root.demo.repositories.UserRepository;
+import root.demo.services.LocationService;
 
 @Service
 public class AddCoAuthorsService implements JavaDelegate {
@@ -32,6 +34,9 @@ public class AddCoAuthorsService implements JavaDelegate {
 
 	@Autowired
 	UserDetailsRepository userDetailsRepository;
+	
+	@Autowired
+	LocationService locationService;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -40,6 +45,7 @@ public class AddCoAuthorsService implements JavaDelegate {
 				"coAuthors");
 
 		UserDetails ud = new UserDetails();
+		
 		for (FormSubmissionDto d : dto) {
 			if (d.getFieldId().equals("email")) {
 				ud.setEmail(d.getFieldValue());
@@ -58,9 +64,17 @@ public class AddCoAuthorsService implements JavaDelegate {
 			}
 
 		}
+		// TODO proveri
+		Location coordinates = locationService.getCoordinates(ud.getCity(), ud.getCountry());
+		ud.setCoordinates(coordinates);
 		
 		userDetailsRepository.saveAndFlush(ud);
 		System.out.println("coAuthor added.");
+		
+		//TODO napravi novi index lokacija gde ces imati lat/lon i ime coveka (autor, koautor, reviewer)
+		// i onda ubacis reviewere u taj index i autore/koautore
+		// kad zavrsis moras index da unistis
+		// sad nzm kako ce ici taj compare
 	}
 
 }

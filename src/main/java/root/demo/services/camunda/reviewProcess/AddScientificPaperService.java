@@ -17,6 +17,8 @@ import root.demo.repositories.MagazineRepository;
 import root.demo.repositories.PaperRepository;
 import root.demo.repositories.ScientificAreaRepository;
 import root.demo.repositories.UserRepository;
+import root.demo.services.es.Indexer;
+import root.demo.services.storage.StorageService;
 
 @Service
 public class AddScientificPaperService implements JavaDelegate {
@@ -35,6 +37,12 @@ public class AddScientificPaperService implements JavaDelegate {
 
 	@Autowired
 	PaperRepository paperRepository;
+
+	@Autowired
+	Indexer indexService;
+
+	@Autowired
+	StorageService storageService;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -76,7 +84,7 @@ public class AddScientificPaperService implements JavaDelegate {
 				paper.setMagazine(m);
 			}
 		}
-		
+
 		paperRepository.saveAndFlush(paper);
 		System.out.println("Paper saved.");
 	}

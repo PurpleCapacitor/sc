@@ -8,4 +8,5 @@ import root.demo.model.Paper;
 @Repository
 public interface PaperRepository extends JpaRepository<Paper, String> {
 	public Paper findByTitle(String title);
+	public Paper findByFile(String file);
 }

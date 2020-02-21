@@ -1,8 +1,11 @@
 package root.demo.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RuntimeService;
@@ -12,6 +15,7 @@ import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,16 +33,21 @@ import root.demo.dto.PaperDTO;
 import root.demo.dto.ReviewDTO;
 import root.demo.dto.UnfinishedReviewDTO;
 import root.demo.dto.UserDTO;
+import root.demo.handlers.DocumentHandler;
 import root.demo.model.Magazine;
 import root.demo.model.Paper;
 import root.demo.model.Review;
 import root.demo.model.ScientificArea;
+import root.demo.model.es.SimpleQuery;
 import root.demo.model.users.User;
 import root.demo.repositories.MagazineRepository;
 import root.demo.repositories.PaperRepository;
 import root.demo.repositories.ScientificAreaRepository;
 import root.demo.repositories.UserRepository;
 import root.demo.services.camunda.reviewProcess.ReviewService;
+import root.demo.services.es.Indexer;
+import root.demo.services.es.ResultRetriever;
+import root.demo.services.storage.StorageService;
 
 @Controller
 @RequestMapping(value = "/reviews")
@@ -68,6 +77,15 @@ public class ReviewerController {
 
 	@Autowired
 	ReviewService reviewService;
+
+	@Autowired
+	ResultRetriever resultRetriever;
+
+	@Autowired
+	StorageService storageService;
+
+	@Autowired
+	Indexer indexer;
 
 	private DummyController dc = new DummyController();
 
@@ -261,6 +279,7 @@ public class ReviewerController {
 
 		ScientificArea sc = new ScientificArea();
 		Magazine m = new Magazine();
+		String fileName = "";
 		for (FormSubmissionDto d : paperDetails) {
 			if (d.getFieldId().equals("scientificArea")) {
 				sc = scientificAreaRepository.findByName(d.getFieldValue());
@@ -268,20 +287,43 @@ public class ReviewerController {
 			if (d.getFieldId().equals("magazine")) {
 				m = magazineRepository.findByName(d.getFieldValue());
 			}
-		}
-
-		List<User> magazineReviewers = m.getReviewers();
-		List<User> matchingReviewers = new ArrayList<User>();
-		for (User u : magazineReviewers) {
-			for (ScientificArea s : u.getScientificAreas()) {
-				if (s.getName().equals(sc.getName())) {
-					matchingReviewers.add(u);
-				}
+			if (d.getFieldId().equals("file")) {
+				fileName = d.getFieldValue();
 			}
 		}
-
+		
 		List<UserDTO> dto = new ArrayList<UserDTO>();
-		for (User u : matchingReviewers) {
+		// filtiranje pod A;
+
+		/*
+		 * List<User> magazineReviewers = m.getReviewers(); List<User> matchingReviewers
+		 * = new ArrayList<User>(); for (User u : magazineReviewers) { for
+		 * (ScientificArea s : u.getScientificAreas()) { if
+		 * (s.getName().equals(sc.getName())) { matchingReviewers.add(u); } } }
+		 * 
+		 * for (User u : matchingReviewers) { UserDTO userDto = new UserDTO();
+		 * userDto.setUsername(u.getUsername()); dto.add(userDto); }
+		 * 
+		 * return dto;
+		 */
+
+		// filtriranje pod B;
+
+		DocumentHandler documentHandler = indexer.getHandler(fileName);
+		Resource resource = storageService.loadFile(fileName);
+		File newFile = null;
+		try {
+			newFile = new File(resource.getURI());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String value = documentHandler.getText(newFile);
+		SimpleQuery sq = new SimpleQuery();
+		sq.setField("text");
+		sq.setValue(value);
+		Set<User> getMoreLikeThisReviewers = resultRetriever.getMoreLikeThisReviewers(sq);
+		List<User> MLTReviewers = new ArrayList<>(getMoreLikeThisReviewers);		
+		for (User u : MLTReviewers) {
 			UserDTO userDto = new UserDTO();
 			userDto.setUsername(u.getUsername());
 			dto.add(userDto);

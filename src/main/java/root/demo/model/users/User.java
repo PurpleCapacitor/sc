@@ -40,11 +40,6 @@ public class User {
 	@Column
 	private boolean wantsReviewer = false;
 
-	/*
-	 * @Column private boolean isReviewer = false;
-	 * 
-	 * @Column private boolean isEditor = false; // sistemska
-	 */	
 	@Column
 	private UserType userType;
 
@@ -112,14 +107,6 @@ public class User {
 	public void setWantsReviewer(boolean wantsReviewer) {
 		this.wantsReviewer = wantsReviewer;
 	}
-	
-	
-
-	/*
-	 * public boolean isReviewer() { return isReviewer; }
-	 * 
-	 * public void setReviewer(boolean isReviewer) { this.isReviewer = isReviewer; }
-	 */
 
 	public UserType getUserType() {
 		return userType;
@@ -160,11 +147,5 @@ public class User {
 	public void setScientificAreas(List<ScientificArea> scientificAreas) {
 		this.scientificAreas = scientificAreas;
 	}
-
-	/*
-	 * public boolean isEditor() { return isEditor; }
-	 * 
-	 * public void setEditor(boolean isEditor) { this.isEditor = isEditor; }
-	 */
 
 }

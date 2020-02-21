@@ -132,7 +132,7 @@ public class TestProcessHandler implements ExecutionListener {
 			reviewer5.getScientificAreas().add(sc3);
 			sc3.getUsers().add(reviewer5);
 
-			UserDetails userDetails11 = new UserDetails(11, "a@cp", "fbggd", "bfgvgnhf", "bvzfg", "qbhahf");
+			UserDetails userDetails11 = new UserDetails(11, "a@cp", "Marko", "Markovic", "bvzfg", "qbhahf");
 			root.demo.model.users.User author = new root.demo.model.users.User("author", "demo", userDetails11);
 			author.setActivated(true);
 			author.setUserType(UserType.author);
@@ -163,6 +163,9 @@ public class TestProcessHandler implements ExecutionListener {
 			userRepository.saveAndFlush(author);
 			userRepository.saveAndFlush(reviewer6);
 			userRepository.saveAndFlush(reviewer7);
+			
+			//TODO treba par reviewera jos da se napravi sa odredjenim koordinatama pa onda pravis es geoprostornu pretragu
+			// zatim se testira
 
 		}
 
