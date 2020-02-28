@@ -15,6 +15,7 @@ import root.demo.model.es.IndexUnit;
 public class TextDocHandler extends DocumentHandler {
 
 	@Override
+	@SuppressWarnings("unused")
 	public IndexUnit getIndexUnit(File file) {
 		IndexUnit retVal = new IndexUnit();
 		BufferedReader reader = null;

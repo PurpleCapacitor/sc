@@ -13,6 +13,7 @@ import root.demo.model.es.IndexUnit;
 
 public class Word2007Handler extends DocumentHandler {
 
+	@SuppressWarnings("unused")
 	public IndexUnit getIndexUnit(File file) {
 		IndexUnit retVal = new IndexUnit();
 

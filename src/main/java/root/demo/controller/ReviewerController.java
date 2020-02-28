@@ -272,6 +272,7 @@ public class ReviewerController {
 	}
 
 	@GetMapping(value = "/reviewers/{pid}", produces = "application/json")
+	@SuppressWarnings("unused")
 	public @ResponseBody List<UserDTO> getReviewers(@PathVariable String pid) {
 
 		List<FormSubmissionDto> paperDetails = (List<FormSubmissionDto>) runtimeService.getVariable(pid,
@@ -291,11 +292,10 @@ public class ReviewerController {
 				fileName = d.getFieldValue();
 			}
 		}
-		
-		List<UserDTO> dto = new ArrayList<UserDTO>();
-		// filtiranje pod A;
 
-		/*
+		List<UserDTO> dto = new ArrayList<UserDTO>();
+
+		/*//pod A
 		 * List<User> magazineReviewers = m.getReviewers(); List<User> matchingReviewers
 		 * = new ArrayList<User>(); for (User u : magazineReviewers) { for
 		 * (ScientificArea s : u.getScientificAreas()) { if
@@ -322,7 +322,7 @@ public class ReviewerController {
 		sq.setField("text");
 		sq.setValue(value);
 		Set<User> getMoreLikeThisReviewers = resultRetriever.getMoreLikeThisReviewers(sq);
-		List<User> MLTReviewers = new ArrayList<>(getMoreLikeThisReviewers);		
+		List<User> MLTReviewers = new ArrayList<>(getMoreLikeThisReviewers);
 		for (User u : MLTReviewers) {
 			UserDTO userDto = new UserDTO();
 			userDto.setUsername(u.getUsername());

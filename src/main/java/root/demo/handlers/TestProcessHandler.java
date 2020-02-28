@@ -136,14 +136,14 @@ public class TestProcessHandler implements ExecutionListener {
 			root.demo.model.users.User author = new root.demo.model.users.User("author", "demo", userDetails11);
 			author.setActivated(true);
 			author.setUserType(UserType.author);
-			
+
 			UserDetails userDetails12 = new UserDetails(12, "aaa@cdb", "zbhgd", "vnhf", "bvzff", "qbhhf");
 			root.demo.model.users.User reviewer6 = new root.demo.model.users.User("reviewer6", "demo", userDetails12);
 			reviewer6.setActivated(true);
 			reviewer6.setUserType(UserType.reviewer); // math
 			reviewer6.getScientificAreas().add(sc1);
 			sc1.getUsers().add(reviewer6);
-			
+
 			UserDetails userDetails13 = new UserDetails(13, "adaa@lb", "zhbhgd", "vnhjf", "bvjzff", "qbhjhf");
 			root.demo.model.users.User reviewer7 = new root.demo.model.users.User("reviewer7", "demo", userDetails13);
 			reviewer7.setActivated(true);
@@ -163,9 +163,6 @@ public class TestProcessHandler implements ExecutionListener {
 			userRepository.saveAndFlush(author);
 			userRepository.saveAndFlush(reviewer6);
 			userRepository.saveAndFlush(reviewer7);
-			
-			//TODO treba par reviewera jos da se napravi sa odredjenim koordinatama pa onda pravis es geoprostornu pretragu
-			// zatim se testira
 
 		}
 
@@ -265,10 +262,8 @@ public class TestProcessHandler implements ExecutionListener {
 
 		}
 
-		List<User> users = identityService.createUserQuery()
-				.userIdIn("editor1", "editor2", "editor3", "reviewer1", "reviewer2", "reviewer3", "author", "reviewer5",
-						"reviewer6", "reviewer7", "test")
-				.list();
+		List<User> users = identityService.createUserQuery().userIdIn("editor1", "editor2", "editor3", "reviewer1",
+				"reviewer2", "reviewer3", "author", "reviewer5", "reviewer6", "reviewer7", "test").list();
 
 		if (users.isEmpty()) {
 
@@ -285,7 +280,7 @@ public class TestProcessHandler implements ExecutionListener {
 			user2.setLastName("Peric");
 			user2.setPassword("pass");
 			identityService.saveUser(user2);
-			
+
 			User user10 = identityService.newUser("editor3");
 			user10.setEmail("perjdsfgghjsa@mail.com");
 			user10.setFirstName("Srra");
@@ -322,14 +317,14 @@ public class TestProcessHandler implements ExecutionListener {
 			user7.setLastName("Pom");
 			user7.setPassword("pass");
 			identityService.saveUser(user7);
-			
+
 			User user8 = identityService.newUser("reviewer6");
 			user8.setEmail("zikhdaa@mail.com");
 			user8.setFirstName("Zisdka");
 			user8.setLastName("Zikissc");
 			user8.setPassword("pass");
 			identityService.saveUser(user8);
-			
+
 			User user9 = identityService.newUser("reviewer7");
 			user9.setEmail("s@ail.com");
 			user9.setFirstName("skks");
@@ -345,9 +340,9 @@ public class TestProcessHandler implements ExecutionListener {
 			user6.setLastName("Mikic");
 			user6.setPassword("pass");
 			identityService.saveUser(user6);
-			
+
 			// admin
-			
+
 			User user11 = identityService.newUser("test");
 			user11.setEmail("jhgfg@mailf.com");
 			user11.setFirstName("Srfffffra");

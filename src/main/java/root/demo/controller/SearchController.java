@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 
-import root.demo.model.Location;
 import root.demo.model.es.AdvancedQuery;
 import root.demo.model.es.RequiredHighlight;
 import root.demo.model.es.ResultData;

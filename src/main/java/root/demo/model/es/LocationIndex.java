@@ -14,7 +14,7 @@ public class LocationIndex {
 	
 	@Id
 	@Field(type = FieldType.Text, store = true)
-	private String name; // author/coauthor/reviewer first name
+	private String name; 
 	@GeoPointField
 	private GeoPoint location;
 

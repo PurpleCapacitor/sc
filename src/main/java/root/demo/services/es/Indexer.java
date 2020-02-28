@@ -31,6 +31,7 @@ public class Indexer {
 	public Indexer() {
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	public boolean delete(String filename) {
 		if (repository.equals(filename)) {
 			repository.deleteById(filename);

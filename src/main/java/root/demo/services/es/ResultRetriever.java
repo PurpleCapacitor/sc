@@ -67,50 +67,6 @@ public class ResultRetriever {
 	public ResultRetriever() {
 	}
 
-	/*
-	 * public List<ResultData> getResults(org.elasticsearch.index.query.QueryBuilder
-	 * query, List<RequiredHighlight> requiredHighlights) { if (query == null) {
-	 * return null; }
-	 * 
-	 * List<ResultData> results = new ArrayList<ResultData>();
-	 * 
-	 * SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-	 * searchSourceBuilder.query(query); searchSourceBuilder.size(maxHits);
-	 * 
-	 * HighlightBuilder highlightBuilder = new HighlightBuilder();
-	 * highlightBuilder.field("idRada"); highlightBuilder.field("statusRada");
-	 * highlightBuilder.field("tipCasopisa");
-	 * highlightBuilder.field("nazivCasopisa"); highlightBuilder.field("naslov");
-	 * highlightBuilder.field("autor"); highlightBuilder.field("kljucniPojmovi");
-	 * highlightBuilder.field("text"); highlightBuilder.field("naucnaOblast");
-	 * highlightBuilder.fragmentSize(100);
-	 * highlightBuilder.preTags("<spam style='color:red'><b>").postTags(
-	 * "</b></spam>"); highlightBuilder.fragmentSize(500);
-	 * searchSourceBuilder.highlighter(highlightBuilder);
-	 * 
-	 * Search search = new
-	 * Search.Builder(searchSourceBuilder.toString()).addIndex("digitallibrary").
-	 * addType("book") .build();
-	 * 
-	 * SearchResult result; try { result = client.execute(search);
-	 * List<SearchResult.Hit<IndexUnit, Void>> hits =
-	 * result.getHits(IndexUnit.class); ResultData rd;
-	 * 
-	 * for (SearchResult.Hit<IndexUnit, Void> sd : hits) { String highlight = "";
-	 * for (String hf : sd.highlight.keySet()) { for (RequiredHighlight rh :
-	 * requiredHighlights) { if (hf.equals(rh.getFieldName())) { highlight +=
-	 * sd.highlight.get(hf).toString(); } } }
-	 * 
-	 * rd = new ResultData(sd.source.getIdRada(), sd.source.getStatusRada(),
-	 * sd.source.getTipCasopisa(), sd.source.getNazivCasopisa(),
-	 * sd.source.getNaslov(), sd.source.getAutor(), sd.source.getKljucniPojmovi(),
-	 * sd.source.getText(), sd.source.getNaucnaOblast(), sd.source.getRecenzenti(),
-	 * sd.source.getFilename(), highlight); results.add(rd); } } catch (IOException
-	 * e) { e.printStackTrace(); }
-	 * 
-	 * return results; }
-	 */
-
 	public List<ResultData> getResults(org.elasticsearch.index.query.QueryBuilder query,
 			List<RequiredHighlight> requiredHighlights) {
 		if (query == null) {
@@ -131,8 +87,6 @@ public class ResultRetriever {
 			}
 
 		}
-		// TODO ako stignes drkaj se s tim highliterima, ima kod bojane, ako ne, ko ga
-		// jebe
 		return results;
 	}
 
@@ -182,11 +136,8 @@ public class ResultRetriever {
 		return repository.findByFile(file);
 	}
 
-	public void geoquery() throws IOException { // TODO dobijas ovde listu reviewera, autora i listu koautora i odradis
-												// njihov
-		// size,
-		// da znas koliko treba da picis lokacija, tj samo size od autora i liste
-		// koautra, s tim se uporedjuje
+	public void geoquery() throws IOException {
+
 		LocationIndex author = new LocationIndex("author", new GeoPoint(45.2671, 19.8335)); // ns
 		LocationIndex coauthor1 = new LocationIndex("coauthor1", new GeoPoint(44.7866, 20.4489)); // bg
 		LocationIndex coauthor2 = new LocationIndex("coauthor2", new GeoPoint(43.8556, 19.8425)); // uzice
@@ -228,21 +179,6 @@ public class ResultRetriever {
 		query.set("bool", bool);
 		pushContent.set("query", query);
 		System.out.println(pushContent.toString());
-
-		/*
-		 * HttpHeaders headers = new HttpHeaders();
-		 * headers.setContentType(MediaType.APPLICATION_JSON);
-		 * headers.setContentLength(pushContent.toString().getBytes().length);
-		 * List<MediaType> mt = new ArrayList<>(); mt.add(MediaType.ALL);
-		 * headers.setAccept(mt); HttpEntity<String> entity = new
-		 * HttpEntity<>(pushContent.toString(), headers); // TODO headeri ne valjaju
-		 * nesto, // ne dobije se // dobar odgovor preko ovoga a preko postmana da
-		 * ResponseEntity<String> result =
-		 * template.exchange("http://localhost:9200/location/_search", HttpMethod.GET,
-		 * entity, String.class, new HashMap<>());
-		 * 
-		 * System.out.println(result.getBody());
-		 */
 
 		URL url = new URL("http://localhost:9200/location/_search");
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
