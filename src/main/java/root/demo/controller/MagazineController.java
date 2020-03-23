@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,8 @@ import root.demo.model.ScientificArea;
 import root.demo.repositories.MagazineRepository;
 import root.demo.repositories.UserRepository;
 
+
+@CrossOrigin(origins = "/*")
 @Controller
 @RequestMapping(value = "/magazines")
 public class MagazineController {
@@ -46,7 +49,7 @@ public class MagazineController {
 
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	MagazineRepository magazineRepository;
 
@@ -111,18 +114,18 @@ public class MagazineController {
 	@PostMapping(value = "/submitPersonnel/{magName}/{taskId}")
 	public ResponseEntity<FormSubmissionDto> submitFields(@PathVariable String taskId, @PathVariable String magName,
 			@RequestBody List<FormSubmissionDto> dto) {
-		
+
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		runtimeService.setVariable(task.getProcessInstanceId(), "magazineName", magName);
 
-		List<String> reviewers = new ArrayList<String>();		
+		List<String> reviewers = new ArrayList<String>();
 		for (FormSubmissionDto d : dto) {
 			if (d.getFieldId().contains("editor")) {
 				if (d.getFieldValue().equals("true")) {
 					runtimeService.setVariable(task.getProcessInstanceId(), "chosenEditorUsername", d.getFieldId());
 				}
 			}
-			
+
 			if (d.getFieldId().contains("reviewer")) {
 				if (d.getFieldValue().equals("true")) {
 					reviewers.add(d.getFieldId());
@@ -134,7 +137,7 @@ public class MagazineController {
 		taskService.complete(taskId);
 		return new ResponseEntity<FormSubmissionDto>(HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/approve/{ProcessInstanceId}", produces = "application/json")
 	public @ResponseBody FormFieldsDto approveMagazine(@PathVariable String ProcessInstanceId) {
 		Task task = taskService.createTaskQuery().processInstanceId(ProcessInstanceId).list().get(0);
@@ -142,15 +145,16 @@ public class MagazineController {
 		List<FormField> properties = tfd.getFormFields();
 		return new FormFieldsDto(task.getId(), ProcessInstanceId, properties);
 	}
-	
+
 	@PostMapping(value = "/decisions/{taskId}")
-	public ResponseEntity<FormSubmissionDto> submitDecision(@PathVariable String taskId, @RequestBody List<FormSubmissionDto> dto) {
+	public ResponseEntity<FormSubmissionDto> submitDecision(@PathVariable String taskId,
+			@RequestBody List<FormSubmissionDto> dto) {
 		HashMap<String, Object> map = dc.mapListToDto(dto);
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-		boolean decision = false; 
+		boolean decision = false;
 		for (FormSubmissionDto d : dto) {
-			if(d.getFieldId().equals("accept")) {
-				if(d.getFieldValue().equals("true")) 
+			if (d.getFieldId().equals("accept")) {
+				if (d.getFieldValue().equals("true"))
 					decision = true;
 			}
 		}
@@ -158,9 +162,9 @@ public class MagazineController {
 		formService.submitTaskForm(taskId, map);
 		return new ResponseEntity<FormSubmissionDto>(HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/scAreas/{magazineName}", produces = "application/json")
-	public ResponseEntity<List<String>> getScAreas(@PathVariable String magazineName) { 
+	public ResponseEntity<List<String>> getScAreas(@PathVariable String magazineName) {
 		Magazine m = magazineRepository.findByName(magazineName);
 		List<ScientificArea> scs = m.getScientificAreas();
 		List<String> list = new ArrayList<String>();

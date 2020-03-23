@@ -1,5 +1,6 @@
 package root.demo.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +57,9 @@ public class Paper {
 
 	@Column
 	private String doi;
+	
+	@Column
+	private BigDecimal price;
 
 	public Paper() {
 
@@ -147,6 +151,14 @@ public class Paper {
 
 	public void setDoi(String doi) {
 		this.doi = doi;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 
 }

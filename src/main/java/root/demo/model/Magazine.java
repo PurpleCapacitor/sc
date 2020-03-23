@@ -1,5 +1,6 @@
 package root.demo.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +56,9 @@ public class Magazine {
 	@JsonIgnore
 	@JoinTable(name = "mag_reviewer", joinColumns = @JoinColumn(name = "mag_id"), inverseJoinColumns = @JoinColumn(name = "reviewer_id"))
 	private List<User> reviewers = new ArrayList<>();
+	
+	@Column
+	private BigDecimal subsciption;
 
 	public Magazine() {
 		super();
@@ -126,6 +130,18 @@ public class Magazine {
 
 	public void setReviewers(List<User> reviewers) {
 		this.reviewers = reviewers;
+	}
+
+	public BigDecimal getSubsciption() {
+		return subsciption;
+	}
+
+	public void setSubsciption(BigDecimal subsciption) {
+		this.subsciption = subsciption;
+	}
+
+	public long getIssn() {
+		return issn;
 	}
 
 }

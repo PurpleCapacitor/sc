@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,7 @@ import root.demo.repositories.UserDetailsRepository;
 import root.demo.repositories.UserRepository;
 import root.demo.repositories.VerificationTokenRepository;
 
+@CrossOrigin(origins = "/*")
 @Controller
 @RequestMapping(value = "/users")
 public class UserController {
@@ -52,10 +54,10 @@ public class UserController {
 
 	@Autowired
 	FormService formService;
-	
+
 	@Autowired
 	TaskService taskService;
-	
+
 	@Autowired
 	IdentityService identityService;
 
@@ -87,11 +89,11 @@ public class UserController {
 	public ResponseEntity<UserDTO> login(@RequestBody UserDTO userDTO) {
 
 		User user = userRepository.findByUsername(userDTO.getUsername());
-		if (identityService.checkPassword(userDTO.getUsername(), userDTO.getPassword())) { 
-				userDTO.setRole(user.getUserType().toString());
-				System.out.println("Credentials valid, logging in");
-				return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
-			
+		if (identityService.checkPassword(userDTO.getUsername(), userDTO.getPassword())) {
+			userDTO.setRole(user.getUserType().toString());
+			System.out.println("Credentials valid, logging in");
+			return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+
 		}
 		if (user.getPassword().equals(userDTO.getPassword())) {
 			userDTO.setRole(user.getUserType().toString());
@@ -116,7 +118,7 @@ public class UserController {
 		return new ResponseEntity<FormSubmissionDto>(HttpStatus.OK);
 
 	}
-	
+
 	@GetMapping(value = "/editors/{pid}/{username}")
 	public ResponseEntity<List<TaskDto>> getEditorTasks(@PathVariable String pid, @PathVariable String username) {
 		List<Task> taskList = taskService.createTaskQuery().processInstanceId(pid).taskAssignee(username).list();
@@ -128,15 +130,15 @@ public class UserController {
 
 		return new ResponseEntity<List<TaskDto>>(dtoList, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/editors/tasks/{taskId}", produces = "application/json")
-	public @ResponseBody FormFieldsDto getEditorTaskFields(@PathVariable String taskId) {		
+	public @ResponseBody FormFieldsDto getEditorTaskFields(@PathVariable String taskId) {
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		TaskFormData tfd = formService.getTaskFormData(task.getId());
 		List<FormField> properties = tfd.getFormFields();
-		return new FormFieldsDto(task.getId(), properties);		
+		return new FormFieldsDto(task.getId(), properties);
 	}
-	
+
 	@GetMapping(value = "/tasks/{pid}/{username}", produces = "application/json")
 	public ResponseEntity<List<TaskDto>> getAuthorTasks(@PathVariable String pid, @PathVariable String username) {
 		List<Task> taskList = taskService.createTaskQuery().processInstanceId(pid).taskAssignee(username).list();
@@ -148,15 +150,15 @@ public class UserController {
 
 		return new ResponseEntity<List<TaskDto>>(dtoList, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/tasks/{taskId}", produces = "application/json")
-	public @ResponseBody FormFieldsDto getAuthorTaskFields(@PathVariable String taskId) {		
+	public @ResponseBody FormFieldsDto getAuthorTaskFields(@PathVariable String taskId) {
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		TaskFormData tfd = formService.getTaskFormData(task.getId());
 		List<FormField> properties = tfd.getFormFields();
-		return new FormFieldsDto(task.getId(), properties);		
+		return new FormFieldsDto(task.getId(), properties);
 	}
-	
+
 	@GetMapping(value = "/reviewers/{pid}/{username}")
 	public ResponseEntity<List<TaskDto>> getReviewerTasks(@PathVariable String pid, @PathVariable String username) {
 		List<Task> taskList = taskService.createTaskQuery().processInstanceId(pid).taskAssignee(username).list();
@@ -168,15 +170,15 @@ public class UserController {
 
 		return new ResponseEntity<List<TaskDto>>(dtoList, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/reviewers/tasks/{taskId}", produces = "application/json")
-	public @ResponseBody FormFieldsDto getReviewerTaskFields(@PathVariable String taskId) {		
+	public @ResponseBody FormFieldsDto getReviewerTaskFields(@PathVariable String taskId) {
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		TaskFormData tfd = formService.getTaskFormData(task.getId());
-		List<FormField> properties = tfd.getFormFields();		
-		return new FormFieldsDto(task.getId(), properties);		
+		List<FormField> properties = tfd.getFormFields();
+		return new FormFieldsDto(task.getId(), properties);
 	}
-	
+
 	@GetMapping(value = "/admins/{pid}/{username}")
 	public ResponseEntity<List<TaskDto>> getAdminTasks(@PathVariable String pid, @PathVariable String username) {
 		List<Task> taskList = taskService.createTaskQuery().processInstanceId(pid).taskAssignee(username).list();
@@ -188,17 +190,13 @@ public class UserController {
 
 		return new ResponseEntity<List<TaskDto>>(dtoList, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/admins/tasks/{taskId}", produces = "application/json")
-	public @ResponseBody FormFieldsDto getAdminTaskFields(@PathVariable String taskId) {		
+	public @ResponseBody FormFieldsDto getAdminTaskFields(@PathVariable String taskId) {
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		TaskFormData tfd = formService.getTaskFormData(task.getId());
-		List<FormField> properties = tfd.getFormFields();		
-		return new FormFieldsDto(task.getId(), properties);		
+		List<FormField> properties = tfd.getFormFields();
+		return new FormFieldsDto(task.getId(), properties);
 	}
-	
-	
-	
-	
 
 }

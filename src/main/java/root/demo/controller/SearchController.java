@@ -10,6 +10,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ import root.demo.services.LocationService;
 import root.demo.services.es.QueryBuilder;
 import root.demo.services.es.ResultRetriever;
 
+@CrossOrigin(origins = "/*")
 @RestController
 @RequestMapping("/search")
 public class SearchController {
