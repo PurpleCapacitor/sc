@@ -61,4 +61,8 @@ export class UserService {
   getAdminTaskFields(tid) {
     return this.httpClient.get('https://localhost:8080/users/admins/tasks/'.concat(tid)) as Observable<any>;
   }
+
+  getCompletedOrders(username) {
+    return this.httpClient.get('https://localhost:8080/orders/completed/'.concat(username)) as Observable<any>;
+  }
 }

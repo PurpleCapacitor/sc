@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {UsersComponent} from '../users/users.component';
+import {UserService} from '../services/users/user.service';
 
 @Component({
   selector: 'app-reader',
@@ -7,7 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReaderComponent implements OnInit {
 
-  constructor() { }
+  private user = JSON.parse(localStorage.getItem("currentUser"));
+  private orders = [];
+
+  constructor(private userService: UserService) {
+    let orders = this.userService.getCompletedOrders(this.user.username);
+    orders.subscribe(res => {
+      this.orders = res;
+    });
+  }
 
   ngOnInit() {
   }

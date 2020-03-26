@@ -1,3 +1,17 @@
-<p>
-  reader works!
-</p>
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <th scope="col">Order type</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Order info</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{order.type}}</td>
+        <td>{{order.amount}}</td>
+        <td *ngIf="order.fileName; else edition"><a href="https://localhost:8080/download/{{order.fileName}}">Redownload {{order.file}}</a></td>
+        <ng-template #edition><td><a routerLink="/editions/{{order.edition}}">Edition info</a></td></ng-template>
+      </tr>
+    </tbody>
+  </table>
+</div>

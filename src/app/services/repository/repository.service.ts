@@ -47,4 +47,12 @@ export class RepositoryService {
     return this.httpClient.get('https://localhost:8080/welcome/scAreas/start/'.concat(pid)) as Observable<any>;
   }
 
+  getEditions() {
+    return this.httpClient.get('https://localhost:8080/orders/shop') as Observable<any>;
+  }
+
+  getPapers(edition) {
+    return this.httpClient.get('https://localhost:8080/orders/shop/papers/'.concat(edition)) as Observable<any>;
+  }
+
 }

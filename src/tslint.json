@@ -19,7 +19,8 @@
         "prefer-const": false,
         "forin": false,
         "whitespace": false,
-        "no-trailing-whitespace": false
+        "no-trailing-whitespace": false,
+        "comment-format": [false, "check-space"]
 
     }
 }

@@ -1,0 +1,13 @@
+<div class="container">
+  <table class="table table-striped">
+    <thead class="table-striped">
+      <tr>Title of paper</tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let paper of papers">
+        <td>{{paper.title}}</td>
+        <td><button class="btn btn-danger" (click)="download(paper.file)">Download</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

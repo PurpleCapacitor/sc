@@ -47,6 +47,8 @@ import { ReaderComponent } from './reader/reader.component';
 import { BankComponent } from './bank/bank.component';
 import { SuccessComponent } from './bank/success/success.component';
 import { FailedComponent } from './bank/failed/failed.component';
+import { ShopComponent } from './shop/shop.component';
+import { EditionComponent } from './bank/success/edition/edition.component';
 
 const ChildRoutes =
   [
@@ -87,7 +89,9 @@ const Routes = [
   { path: 'reader', component: ReaderComponent },
   { path: 'otpBank/:url/:paymentId', component: BankComponent },
   { path: 'success/:merchantOrderId', component: SuccessComponent },
-  { path: 'failed/:merchantOrderId', component: FailedComponent }
+  { path: 'failed/:merchantOrderId', component: FailedComponent },
+  { path: 'shop', component: ShopComponent },
+  { path: 'editions/:id', component: EditionComponent }
 ];
 
 @NgModule({
@@ -125,6 +129,8 @@ const Routes = [
     BankComponent,
     SuccessComponent,
     FailedComponent,
+    ShopComponent,
+    EditionComponent,
   ],
   imports: [
     BrowserModule,

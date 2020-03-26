@@ -1,0 +1,17 @@
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>Edition name</tr>
+      <tr>Price</tr>
+      <tr>Magazine</tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let edition of editions">
+        <td>{{edition.name}}</td>
+        <td>{{edition.price}}</td>
+        <td>{{edition.magazineName}}</td>
+        <td><button class="btn btn-danger" (click)="buy(edition.name, edition.magazineName, edition.price)">Buy</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
