@@ -35,6 +35,9 @@ public class Order {
 	private String fileName;
 	
 	@Column
+	private String edition;
+	
+	@Column
 	private BigDecimal amount;
 	
 	@Column
@@ -87,6 +90,13 @@ public class Order {
 	}
 	public void setStatus(OrderStatus status) {
 		this.status = status;
+	}
+	
+	public String getEdition() {
+		return edition;
+	}
+	public void setEdition(String edition) {
+		this.edition = edition;
 	}
 	
 	public Order() {

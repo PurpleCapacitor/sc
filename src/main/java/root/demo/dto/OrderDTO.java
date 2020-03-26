@@ -9,6 +9,7 @@ public class OrderDTO implements Serializable {
 	private String buyerUsername;
 	private String fileName;
 	private String amount;
+	private String edition;
 	
 	public OrderDTO() {
 		
@@ -45,6 +46,16 @@ public class OrderDTO implements Serializable {
 	public void setAmount(String amount) {
 		this.amount = amount;
 	}
+
+	public String getEdition() {
+		return edition;
+	}
+
+	public void setEdition(String edition) {
+		this.edition = edition;
+	}
+	
+	
 	
 	
 

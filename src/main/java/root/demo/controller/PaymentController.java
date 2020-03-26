@@ -2,10 +2,11 @@ package root.demo.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
-import org.aspectj.weaver.patterns.HasMemberTypePattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,12 +24,21 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import root.demo.dto.BankDTO;
+import root.demo.dto.EditionDTO;
 import root.demo.dto.OrderDTO;
+import root.demo.dto.PaperDTO;
 import root.demo.dto.PaymentDTO;
+import root.demo.dto.UserOrderDTO;
+import root.demo.model.Edition;
+import root.demo.model.Paper;
 import root.demo.model.enums.OrderStatus;
 import root.demo.model.enums.OrderType;
+import root.demo.model.enums.UserType;
 import root.demo.model.payment.Order;
+import root.demo.model.users.User;
+import root.demo.repositories.EditionRepository;
 import root.demo.repositories.OrderRepository;
+import root.demo.repositories.UserRepository;
 
 @CrossOrigin(origins = "/*")
 @Controller
@@ -43,6 +53,12 @@ public class PaymentController {
 	@Autowired
 	OrderRepository orderRepository;
 
+	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
+	EditionRepository editionRepository;
+
 	@PostMapping(value = "/papers")
 	public ResponseEntity<BankDTO> getPaymentIdAndUrlFromBank(@RequestBody OrderDTO orderDto) {
 		Order order = new Order();
@@ -51,11 +67,17 @@ public class PaymentController {
 		order.setMerchantId(orderDto.getMerchantId());
 		order.setAmount(new BigDecimal(orderDto.getAmount()));
 		order.setBuyerUsername(orderDto.getBuyerUsername());
-		if (orderDto.getFileName() == null) {
-			order.setType(OrderType.subscription);
+		User user = userRepository.findByUsername(orderDto.getBuyerUsername());
+		if (user.getUserType().equals(UserType.author)) { // TODO autor moze isto da radi ko i reader al nema veze sad
+			order.setType(OrderType.openAccess);
 		} else {
-			order.setType(OrderType.purchase);
-			order.setFileName(orderDto.getFileName());
+			if (orderDto.getFileName() == null) {
+				order.setType(OrderType.edition);
+				order.setEdition(orderDto.getEdition());
+			} else {
+				order.setType(OrderType.purchase);
+				order.setFileName(orderDto.getFileName());
+			}
 		}
 
 		order.setTimestamp(LocalDateTime.now());
@@ -110,9 +132,16 @@ public class PaymentController {
 				order.setStatus(OrderStatus.success);
 				orderRepository.save(order);
 				return new ResponseEntity<HashMap<String, String>>(map, HttpStatus.OK);
+			} else if (order.getType().equals(OrderType.edition)) {
+				map = new HashMap<>();
+				map.put("orderType", "edition");
+				map.put("editionName", order.getEdition());
+				order.setStatus(OrderStatus.success);
+				orderRepository.save(order);
+				return new ResponseEntity<HashMap<String, String>>(map, HttpStatus.OK);
 			} else {
-				map = new HashMap<>();				
-				map.put("orderType", "subscription");
+				map = new HashMap<>();
+				map.put("orderType", "openAccess");
 				order.setStatus(OrderStatus.success);
 				orderRepository.save(order);
 				return new ResponseEntity<HashMap<String, String>>(map, HttpStatus.OK);
@@ -126,8 +155,63 @@ public class PaymentController {
 			orderRepository.save(order);
 			return new ResponseEntity<HashMap<String, String>>(HttpStatus.OK);
 		}
+
+	}
+
+	@GetMapping(value = "completed/{username}")
+	public ResponseEntity<List<UserOrderDTO>> getCompletedOrders(@PathVariable String username) {
+		List<Order> orderList = orderRepository.findByBuyerUsername(username);
+		List<UserOrderDTO> userOrderDTOs = new ArrayList<UserOrderDTO>();
+
+		for (Order order : orderList) {
+			UserOrderDTO userOrderDTO = new UserOrderDTO();
+			userOrderDTO.setType(order.getType().toString());
+			userOrderDTO.setAmount(order.getAmount().toString());
+			if (order.getType().equals(OrderType.openAccess)) {
+				userOrderDTOs.add(userOrderDTO);
+			} else if (order.getType().equals(OrderType.edition)) {
+				userOrderDTO.setEdition(order.getEdition());
+				userOrderDTOs.add(userOrderDTO);
+			} else {
+				userOrderDTO.setFileName(order.getFileName());
+				userOrderDTOs.add(userOrderDTO);
+			}
+		}
+
+		return new ResponseEntity<List<UserOrderDTO>>(userOrderDTOs, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "shop")
+	public ResponseEntity<List<EditionDTO>> getEditions() {
+		List<Edition> editions = editionRepository.findAll();
+		List<EditionDTO> editionDTOs = new ArrayList<EditionDTO>();
+		for (Edition edition : editions) {
+			EditionDTO editionDTO = new EditionDTO(edition.getName(), edition.getPrice().toString(),
+					edition.getMagazine().getName());
+			editionDTOs.add(editionDTO);
+		}
+
+		return new ResponseEntity<List<EditionDTO>>(editionDTOs, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "shop/papers/{edition}")
+	public ResponseEntity<List<PaperDTO>> getPapers(@PathVariable String edition) {
+		Edition e = editionRepository.findByName(edition);
+		List<PaperDTO> papersList = new ArrayList<>();
+		for(Paper paper : e.getPapers()) {
+			PaperDTO paperDTO = new PaperDTO();
+			paperDTO.setTitle(paper.getTitle());
+			paperDTO.setFile(paper.getFile());
+			papersList.add(paperDTO);
+			
+		}
 		
-		//TODO dodaj u listu kupljenih stvari za taj username, to ce bit kao poseban view, taj pregled i to 
+		return new ResponseEntity<List<PaperDTO>>(papersList,HttpStatus.OK);
+	}
+
+	@GetMapping(value = "test")
+	public ResponseEntity<String> testConnection() {
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
 }
