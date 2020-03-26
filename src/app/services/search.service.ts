@@ -15,10 +15,10 @@ export class SearchService {
 
 
   searchSimple(query: SimpleQuery): Observable<any[]> {
-    return this.http.post<any[]>("http://localhost:8080/search", query);
+    return this.http.post<any[]>("https://localhost:8080/search", query);
   }
 
   searchBoolean(query: AdvancedQuery): Observable<any[]> {
-    return this.http.post<any[]>("http://localhost:8080/search/boolean", query);
+    return this.http.post<any[]>("https://localhost:8080/search/boolean", query);
   }
 }

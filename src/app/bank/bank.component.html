@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row ml-auto mr-auto mt-5">
+    <div class="col col-md-3"></div>
+    <div class="col col-md-6 mt-5">
+
+      <form class="form-card mt-3" #paymentForm="ngForm" ngNativeValidate (ngSubmit)="onSubmit(paymentForm)">
+        <div class="form-group col">
+          <h2 class="mb-3 text-light">Plaćanje kreditnom karticom</h2>
+        </div>
+        <div class="form-group col">
+          <label for="pan">Card number: </label>
+          <input name="pan" [(ngModel)]="formModel.pan" id="pan" type="text" class="form-control" pattern="[0-9]{16}" required/>
+        </div>
+        <div class="form-group col">
+          <label for="cardHolderName">Cardholder name: </label>
+          <input name="cardHolderName" [(ngModel)]="formModel.cardHolderName" id="cardHolderName" type="text" class="form-control" required/>
+        </div>
+        <div class="form-group col">
+          <label for="ccv">CCV: </label>
+          <input name="ccv" [(ngModel)]="formModel.ccv" id="ccv" type="text" class="form-control" pattern="[0-9]{3}" required/>
+        </div>
+        <div class="form-group col">
+          <label for="validThru">Valid thru: </label>
+          <input name="validThru" [(ngModel)]="formModel.validThru" id="validThru" type="date" class="form-control" required/>
+        </div>
+
+        <div class="form-group col">
+          <button id="payButton" type="submit" class="btn btn-success mb-3" >Pay</button>
+        </div>
+      </form>
+    </div>
+    <div class="col col-md-3"></div>
+  </div>
+</div>

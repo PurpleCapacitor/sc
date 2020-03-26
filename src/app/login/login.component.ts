@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     this.user.username = this.credentials.get('username').value;
     this.user.password = this.credentials.get('password').value;
     console.log(this.user.username + ' ' + this.user.password);
-    let x = this.httpClient.post("http://localhost:8080/users/login", this.user, {responseType: 'text'});
+    let x = this.httpClient.post("https://localhost:8080/users/login", this.user, {responseType: 'text'});
     x.subscribe(
       res => {
         this.user = JSON.parse(res);
@@ -59,6 +59,12 @@ export class LoginComponent implements OnInit {
             window.location.reload();
           });
 
+        }
+        if(this.user.role === 'reader') {
+          this.router.navigate(['/reader'])
+            .then(() => {
+              window.location.reload();
+            });
         }
 
       }

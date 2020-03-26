@@ -43,6 +43,10 @@ import { PaperDecisionComponent } from './editor/paper-decision/paper-decision.c
 import { ReworkEndComponent } from './author/rework-end/rework-end.component';
 import { PickAdditionalReviewersComponent } from './editor/pick-additional-reviewers/pick-additional-reviewers.component';
 import { SearchComponent } from './search/search.component';
+import { ReaderComponent } from './reader/reader.component';
+import { BankComponent } from './bank/bank.component';
+import { SuccessComponent } from './bank/success/success.component';
+import { FailedComponent } from './bank/failed/failed.component';
 
 const ChildRoutes =
   [
@@ -79,7 +83,11 @@ const Routes = [
   { path: 'paperDecision', component: PaperDecisionComponent },
   { path: 'reworkPaperAgain', component: ReworkEndComponent },
   { path: 'pickAdditionalReviewers', component: PickAdditionalReviewersComponent },
-  { path: 'search', component: SearchComponent }
+  { path: 'search', component: SearchComponent },
+  { path: 'reader', component: ReaderComponent },
+  { path: 'otpBank/:url/:paymentId', component: BankComponent },
+  { path: 'success/:merchantOrderId', component: SuccessComponent },
+  { path: 'failed/:merchantOrderId', component: FailedComponent }
 ];
 
 @NgModule({
@@ -113,6 +121,10 @@ const Routes = [
     ReworkEndComponent,
     PickAdditionalReviewersComponent,
     SearchComponent,
+    ReaderComponent,
+    BankComponent,
+    SuccessComponent,
+    FailedComponent,
   ],
   imports: [
     BrowserModule,

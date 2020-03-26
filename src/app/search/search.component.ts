@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {SearchService} from '../services/search.service';
 import {AdvancedQuery} from '../advanced-query';
 import {SimpleQuery} from '../simple-query';
-
+import {BankService} from '../services/bank.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -14,8 +15,11 @@ export class SearchComponent implements OnInit {
   results: any[];
   advancedQuery: AdvancedQuery;
   fields: any[];
+  private user = JSON.parse(localStorage.getItem("currentUser"));
 
-  constructor(private searchService: SearchService) {
+  constructor(private searchService: SearchService,
+              private bankService: BankService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -92,7 +96,14 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  buyPaper() {
-    alert("Successfully added to cart.");
+  buyPaper(magazineName, fileName) {
+    let amount = "10.1"; // TODO ovo treba da se vuce, sad je trenutno zakucano
+    let item = {"amount":amount, "merchantId": magazineName, "fileName":fileName, "buyerUsername":this.user.username};
+    let submit = this.bankService.requestPaymentResponse(item);
+    submit.subscribe(res => {
+      this.router.navigate([res.paymentUrl + '/' + res.paymentId]);
+    }, error => {
+      this.router.navigate(['/error']);
+    });
   }
 }

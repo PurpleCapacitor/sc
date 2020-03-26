@@ -66,12 +66,12 @@
               </div>
               <ng-template #canDownload>
                 <div>
-                  <a class="btn btn-danger" href="http://localhost:8080/download/{{item.filename}}" target="_blank" >Download paper</a>
+                  <a class="btn btn-danger" href="http://localhost:8080/download/{{item.file}}" target="_blank" >Download paper</a>
                 </div>
               </ng-template>
               <ng-template #mustBuy>
                 <div class="text-center">
-                  <button class="btn btn-danger" (click)="buyPaper()">Buy paper</button>
+                  <button class="btn btn-danger" (click)="buyPaper(item.magazineName, item.file)">Buy paper</button>
                 </div>
               </ng-template>
             </div>

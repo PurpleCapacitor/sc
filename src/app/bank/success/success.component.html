@@ -1,0 +1,10 @@
+<div class="container">
+  <p *ngIf="fileDownload === true else subscription" >
+
+    Your file can be downloaded <a href="https://localhost:8080/download/{{fileName}}">here.</a> Thank you for purchasing.
+
+  </p>
+  <ng-template #subscription>Your subscription is now valid. Thanks for purchasing.</ng-template>
+
+  <a href="https://localhost:4200/">Return home</a>
+</div>

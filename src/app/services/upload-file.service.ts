@@ -15,7 +15,7 @@ export class UploadFileService {
 
     formdata.append('file', file);
 
-    const req = new HttpRequest('POST', 'http://localhost:8080/upload/files', formdata, {
+    const req = new HttpRequest('POST', 'https://localhost:8080/upload/files', formdata, {
       reportProgress: true,
       responseType: 'text'
     });
@@ -24,6 +24,6 @@ export class UploadFileService {
   }
 
   getFiles() {
-    return this.http.get('http://localhost:8080/upload/all') as Observable<any>;
+    return this.http.get('https://localhost:8080/upload/all') as Observable<any>;
   }
 }
