@@ -1,6 +1,7 @@
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand" [routerLink]="['/login']" *ngIf="notLoggedIn()">Login</a>
   <a class="navbar-brand" [routerLink]="['/login']" *ngIf="loggedIn()" (click)="logout()">Log out</a>
+  <a class="navbar-brand" [routerLink]="['/shop']" *ngIf="loggedIn()">Shop</a>
   <a class="navbar-brand" [routerLink]="['/search']">Search</a>
 </nav>
 <router-outlet></router-outlet>
