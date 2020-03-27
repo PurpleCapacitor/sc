@@ -49,6 +49,7 @@ import { SuccessComponent } from './bank/success/success.component';
 import { FailedComponent } from './bank/failed/failed.component';
 import { ShopComponent } from './shop/shop.component';
 import { EditionComponent } from './bank/success/edition/edition.component';
+import { PayOpenAccessComponent } from './author/pay-open-access/pay-open-access.component';
 
 const ChildRoutes =
   [
@@ -91,7 +92,8 @@ const Routes = [
   { path: 'success/:merchantOrderId', component: SuccessComponent },
   { path: 'failed/:merchantOrderId', component: FailedComponent },
   { path: 'shop', component: ShopComponent },
-  { path: 'editions/:id', component: EditionComponent }
+  { path: 'editions/:id', component: EditionComponent },
+  { path: 'payOpenAccess', component: PayOpenAccessComponent }
 ];
 
 @NgModule({
@@ -131,6 +133,7 @@ const Routes = [
     FailedComponent,
     ShopComponent,
     EditionComponent,
+    PayOpenAccessComponent,
   ],
   imports: [
     BrowserModule,

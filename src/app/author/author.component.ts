@@ -36,6 +36,12 @@ export class AuthorComponent implements OnInit {
       if(taskName === "Rework paper again") {
         this.router.navigate(['/reworkPaperAgain']);
       }
+      if(taskName === "Pay") {
+        this.router.navigate(['/payOpenAccess']);
+      }
+      if(taskName === "Enter data about scientific paper") {
+        this.router.navigate(['/scPaper']);
+      }
 
     });
   }

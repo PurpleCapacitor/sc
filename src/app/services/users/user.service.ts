@@ -65,4 +65,12 @@ export class UserService {
   getCompletedOrders(username) {
     return this.httpClient.get('https://localhost:8080/orders/completed/'.concat(username)) as Observable<any>;
   }
+
+  completePaymentRequest(taskIdObject) {
+    return this.httpClient.post('https://localhost:8080/reviews/paymentRequests/', taskIdObject) as Observable<any>;
+  }
+
+  paymentFinish(signal) {
+    return this.httpClient.post('https://localhost:8080/reviews/signals/', signal) as Observable<any>;
+  }
 }

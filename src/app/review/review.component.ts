@@ -45,7 +45,7 @@ export class ReviewComponent implements OnInit {
 
     submit.subscribe(res => {
       console.log("ok");
-      this.router.navigate(['/scPaper']);
+      this.router.navigate(['/author']);
     });
   }
 }

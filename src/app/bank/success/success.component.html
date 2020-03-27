@@ -1,10 +1,15 @@
 <div class="container">
-  <p *ngIf="fileDownload === true else edition" >
-
+  <p *ngIf="fileDownload === true" >
     Your file can be downloaded <a href="https://localhost:8080/download/{{fileName}}">here.</a> Thank you for purchasing.
-
+    <a href="https://localhost:4200/">Return home</a>
   </p>
-  <ng-template #edition>Your edition can be downloaded <a routerLink="/editions/{{editionName}}">here</a>. Thanks for purchasing.</ng-template>
-
-  <a href="https://localhost:4200/">Return home</a>
+  <p *ngIf="edition === true" >
+    Your edition can be downloaded <a routerLink="/editions/{{editionName}}">here</a>. Thanks for purchasing.
+    <a href="https://localhost:4200/">Return home</a>
+  </p>
+  <p *ngIf="openAcccess === true">
+    Open access successfully paid.
+    <br/>
+    <a href="https://localhost:4200/author">Return home</a>
+  </p>
 </div>
