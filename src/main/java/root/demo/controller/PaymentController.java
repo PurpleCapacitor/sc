@@ -68,7 +68,7 @@ public class PaymentController {
 		order.setAmount(new BigDecimal(orderDto.getAmount()));
 		order.setBuyerUsername(orderDto.getBuyerUsername());
 		User user = userRepository.findByUsername(orderDto.getBuyerUsername());
-		if (user.getUserType().equals(UserType.author)) { // TODO autor moze isto da radi ko i reader al nema veze sad
+		if (user.getUserType().equals(UserType.author)) { 
 			order.setType(OrderType.openAccess);
 		} else {
 			if (orderDto.getFileName() == null) {
