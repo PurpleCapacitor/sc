@@ -40,7 +40,7 @@ public class SearchMagazineService implements JavaDelegate {
 				runtimeService.setVariable(execution.getId(), "magazineType", magType);
 				runtimeService.setVariable(execution.getId(), "mainEditorUsername", m.getMainEditor().getUsername());
 			}
-			runtimeService.setVariable(execution.getId(), "subPaid", true);
+			
 
 		}
 		

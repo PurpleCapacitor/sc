@@ -32,6 +32,7 @@ import root.demo.dto.FormSubmissionDto;
 import root.demo.dto.MagazineDTO;
 import root.demo.dto.PaperDTO;
 import root.demo.dto.ReviewDTO;
+import root.demo.dto.TaskDto;
 import root.demo.dto.UnfinishedReviewDTO;
 import root.demo.dto.UserDTO;
 import root.demo.handlers.DocumentHandler;
@@ -297,10 +298,10 @@ public class ReviewerController {
 
 		List<UserDTO> dto = new ArrayList<UserDTO>();
 
-		/*//pod A
-		 * List<User> magazineReviewers = m.getReviewers(); List<User> matchingReviewers
-		 * = new ArrayList<User>(); for (User u : magazineReviewers) { for
-		 * (ScientificArea s : u.getScientificAreas()) { if
+		/*
+		 * //pod A List<User> magazineReviewers = m.getReviewers(); List<User>
+		 * matchingReviewers = new ArrayList<User>(); for (User u : magazineReviewers) {
+		 * for (ScientificArea s : u.getScientificAreas()) { if
 		 * (s.getName().equals(sc.getName())) { matchingReviewers.add(u); } } }
 		 * 
 		 * for (User u : matchingReviewers) { UserDTO userDto = new UserDTO();
@@ -454,6 +455,19 @@ public class ReviewerController {
 		}
 
 		return dto;
+	}
+
+	@PostMapping(value = "/paymentRequests")
+	public ResponseEntity<String> completedPaymentRequest(@RequestBody TaskDto task) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		formService.submitTaskForm(task.getTaskId(), map);
+		return new ResponseEntity<String>(HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/signals")
+	public ResponseEntity<String> paid(@RequestBody HashMap<String, String> signal) {
+		runtimeService.signalEventReceived(signal.get("signal"));
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
 }
