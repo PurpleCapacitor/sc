@@ -58,7 +58,8 @@ public class PaymentController {
 
 	@Autowired
 	EditionRepository editionRepository;
-
+	
+	
 	@PostMapping(value = "/papers")
 	public ResponseEntity<BankDTO> getPaymentIdAndUrlFromBank(@RequestBody OrderDTO orderDto) {
 		Order order = new Order();
