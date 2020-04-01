@@ -97,7 +97,7 @@ export class SearchComponent implements OnInit {
   }
 
   buyPaper(magazineName, fileName) {
-    let amount = "10.1"; // TODO ovo treba da se vuce, sad je trenutno zakucano
+    let amount = "10.1";
     let item = {"amount":amount, "merchantId": magazineName, "fileName":fileName, "buyerUsername":this.user.username};
     let submit = this.bankService.requestPaymentResponse(item);
     submit.subscribe(res => {
