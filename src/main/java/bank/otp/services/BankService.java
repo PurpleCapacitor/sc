@@ -172,10 +172,7 @@ public class BankService {
 
     private boolean checkCardValidThru(LocalDate validThru) {
         LocalDate dateNow = LocalDate.now();
-        if(dateNow.isBefore(validThru) || dateNow.isEqual(validThru)) {
-            return true;
-        }
-        return false;
+        return dateNow.isBefore(validThru) || dateNow.isEqual(validThru);
 
     }
 
