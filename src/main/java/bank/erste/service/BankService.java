@@ -91,12 +91,7 @@ public class BankService {
 
     private boolean checkCardValidThru(LocalDate validThru) {
         LocalDate dateNow = LocalDate.now();
-        if (dateNow.getYear() > validThru.getYear()) {
-            return false;
-        } else if (dateNow.getMonth().getValue() > validThru.getMonth().getValue()) {
-            return false;
-        }
-        return true;
+        return dateNow.isBefore(validThru) || dateNow.isEqual(validThru);
 
     }
 
